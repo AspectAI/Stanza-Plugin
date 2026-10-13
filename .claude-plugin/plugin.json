@@ -1,0 +1,23 @@
+{
+  "name": "stanza",
+  "displayName": "Stanza",
+  "version": "0.1.0",
+  "description": "Bring your company's brand and marketing context to your agents so they can think and write like you.",
+  "author": {
+    "name": "Stanza",
+    "email": "support@runstanza.com",
+    "url": "https://runstanza.com"
+  },
+  "homepage": "https://runstanza.com",
+  "keywords": ["marketing", "content", "writing", "agents", "ai", "assistant"],
+  "icon": "./assets/stanza-logomark-plugin-icon.png",
+  "supportUrl": "https://runstanza.com/support",
+  "privacyPolicyUrl": "https://runstanza.com/legal/privacy",
+  "termsOfServiceUrl": "https://runstanza.com/legal/tos",
+  "mcpServers": {
+    "stanza": {
+      "type": "http",
+      "url": "https://app.runstanza.com/api/mcp"
+    }
+  }
+}
