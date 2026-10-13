@@ -1,0 +1,93 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "stanza",
+  "version": "0.1.0",
+  "author": {
+    "name": "Stanza",
+    "email": "support@runstanza.com",
+    "url": "https://runstanza.com"
+  },
+  "description": "Bring your company's brand and marketing context to your agents so they can think and write like you.",
+  "homepage": "https://runstanza.com",
+  "keywords": ["marketing", "content", "writing", "agents", "ai", "assistant"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Stanza",
+        "developerName": "Aspect, Inc.",
+        "shortDescription": "Marketing context for agents",
+        "longDescription": "Stanza helps teams and agents work together to create on-brand, on-message content. Scale marketing with agents that think and write like you. Give agents the context to stay on-brand and on-message. Create, review, and publish with teams of agents and humans working together. Turn repetitive content work into proactive workflows and automations.",
+        "category": "Communication",
+        "defaultPrompt": [
+          "Use our brand voice to draft some content with me.",
+          "Write an overview of our products.",
+          "Create a new article draft and give me a link to edit it."
+        ],
+        "websiteURL": "https://runstanza.com",
+        "supportURL": "https://runstanza.com/support",
+        "privacyPolicyURL": "https://runstanza.com/legal/privacy",
+        "termsOfServiceURL": "https://runstanza.com/legal/tos",
+        "brandColor": "#5e6ad2",
+        "brandColorDark": "#79A3E4",
+        "logo": "./assets/stanza-logomark-plugin-icon.png",
+        "composerIcon": "./assets/stanza-logomark-plugin-icon.png",
+        "logoDark": "./assets/stanza-logomark-plugin-icon.png",
+        "composerIconDark": "./assets/stanza-logomark-plugin-icon.png"
+      },
+      "review": {
+        "demo_recording_url": "https://youtu.be/GJlYtPYDapY",
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Get brand overview",
+              "prompt": "Give me an overview of the Hooli brand using Stanza.",
+              "tools_triggered": "get_brand_overview",
+              "expected_behavior": "Call get_brand_overview with brand Hooli. Return an overview of the Hooli brand."
+            },
+            {
+              "description": "Search knowledge",
+              "prompt": "Use Stanza to tell me what products Hooli offers.",
+              "tools_triggered": "search_brain",
+              "expected_behavior": "Call search_brain with relevant keywords. Return a description of Hooli's product offerings to the user."
+            },
+            {
+              "description": "Read file",
+              "prompt": "Use the Hooli competitive positioning document in Stanza to tell me how we describe what's unique about Hooli.",
+              "tools_triggered": "read_brain_file",
+              "expected_behavior": "Call read_brain_file to read the Hooli competitive positioning document and answer the user's question about how Hooli describes what's unique about itself."
+            },
+            {
+              "description": "Grounded writing",
+              "prompt": "Use Stanza to write an introduction to our products in our voice. Keep it in this chat.",
+              "tools_triggered": "get_brand_overview, search_brain, read_brain_file",
+              "expected_behavior": "Get the brand voice and product description from Stanza and use them to write an introduction to Hooli's products in the Hooli voice."
+            },
+            {
+              "description": "Create draft",
+              "prompt": "Write a product introduction as a new draft in Stanza titled 'An Intro to Hooli Products'.",
+              "tools_triggered": "save_draft",
+              "expected_behavior": "Call save_draft to create a document in Stanza called 'An Intro to Hooli Products'. Return the tool's Editor URL and Brain path; opening it shows the same title and body."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unsupported deletion",
+              "prompt": "Delete every source file in Stanza's knowledge base."
+            },
+            {
+              "description": "Access unconnected account",
+              "prompt": "Use Stanza to give me the brand overview of Aviato."
+            },
+            {
+              "description": "Update billing method",
+              "prompt": "Update my billing method in Stanza."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "Initial release: Connect to Stanza, explore and search your workspace, read files, and create new drafts with links to the Editor."
+      }
+    }
+  }
+}
