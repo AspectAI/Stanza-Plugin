@@ -32,5 +32,3 @@ Version 0.2.0 requires `get_voice`, `get_context`, `search_context`,
 connected server. Deploy the corresponding Stanza server changes before
 publishing this plugin version. Voice and customer skills are retrieved live;
 they are not copied into this package.
-
-See [host smoke tests](tests/README.md) for the verification cases and limits.
