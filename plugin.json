@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "stanza",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Stanza",
     "email": "support@runstanza.com",
@@ -19,7 +19,7 @@
         "longDescription": "Stanza helps teams and agents work together to create on-brand, on-message content. Scale marketing with agents that think and write like you. Give agents the context to stay on-brand and on-message. Create, review, and publish with teams of agents and humans working together. Turn repetitive content work into proactive workflows and automations.",
         "category": "Communication",
         "defaultPrompt": [
-          "Use our brand voice to draft some content with me.",
+          "Write a LinkedIn post about our latest product launch.",
           "Write an overview of our products.",
           "Create a new article draft and give me a link to edit it."
         ],
@@ -41,32 +41,56 @@
             {
               "description": "Get brand overview",
               "prompt": "Give me an overview of the Hooli brand using Stanza.",
-              "tools_triggered": "get_brand_overview",
-              "expected_behavior": "Call get_brand_overview with brand Hooli. Return an overview of the Hooli brand."
+              "tools_triggered": "get_context",
+              "expected_behavior": "Call get_context with brand Hooli. Return an overview of the Hooli brand."
             },
             {
               "description": "Search knowledge",
               "prompt": "Use Stanza to tell me what products Hooli offers.",
-              "tools_triggered": "search_brain",
-              "expected_behavior": "Call search_brain with relevant keywords. Return a description of Hooli's product offerings to the user."
+              "tools_triggered": "search_context",
+              "expected_behavior": "Call search_context with relevant keywords. Return a description of Hooli's product offerings to the user."
             },
             {
               "description": "Read file",
               "prompt": "Use the Hooli competitive positioning document in Stanza to tell me how we describe what's unique about Hooli.",
-              "tools_triggered": "read_brain_file",
-              "expected_behavior": "Call read_brain_file to read the Hooli competitive positioning document and answer the user's question about how Hooli describes what's unique about itself."
+              "tools_triggered": "read_context_file",
+              "expected_behavior": "Call read_context_file to read the Hooli competitive positioning document and answer the user's question about how Hooli describes what's unique about itself."
             },
             {
-              "description": "Grounded writing",
-              "prompt": "Use Stanza to write an introduction to our products in our voice. Keep it in this chat.",
-              "tools_triggered": "get_brand_overview, search_brain, read_brain_file",
-              "expected_behavior": "Get the brand voice and product description from Stanza and use them to write an introduction to Hooli's products in the Hooli voice."
+              "description": "Brand voice without an explicit voice request",
+              "prompt": "Use Stanza to write an introduction to Hooli products. Keep it in this chat.",
+              "tools_triggered": "get_voice, search_context, read_context_file",
+              "expected_behavior": "Resolve Hooli, call get_voice before composing, retrieve product facts, and apply the saved voice to the introduction. Keep it in chat; do not create a draft."
             },
             {
               "description": "Create draft",
               "prompt": "Write a product introduction as a new draft in Stanza titled 'An Intro to Hooli Products'.",
-              "tools_triggered": "save_draft",
-              "expected_behavior": "Call save_draft to create a document in Stanza called 'An Intro to Hooli Products'. Return the tool's Editor URL and Brain path; opening it shows the same title and body."
+              "tools_triggered": "get_voice, create_draft",
+              "expected_behavior": "Resolve Hooli, call get_voice before composing, and retrieve the relevant product facts. Call create_draft with the projectId, a fresh requestId, title, and Markdown body. Return its editor link and path; opening it shows the same title and body."
+            },
+            {
+              "description": "Apply the customer’s channel skill",
+              "prompt": "Write a LinkedIn post about Hooli’s products using Stanza.",
+              "tools_triggered": "get_voice, list_skills, read_skill",
+              "expected_behavior": "Load Hooli’s current voice, list its writing skills, and read a matching LinkedIn skill if one exists before composing. Ground product claims in Context. Do not invent a missing skill."
+            },
+            {
+              "description": "Rewrite an existing article",
+              "prompt": "Use Stanza to tighten the introduction of my Hooli product overview.",
+              "tools_triggered": "get_voice, read_article, edit_article",
+              "expected_behavior": "Resolve the article, read its current text, and call get_voice for the same project before composing the rewrite. Apply targeted edits using the returned editToken and preserve unrelated text."
+            },
+            {
+              "description": "Create a blank draft",
+              "prompt": "Create a blank Hooli draft in Stanza titled Notes. Do not write anything yet.",
+              "tools_triggered": "create_draft",
+              "expected_behavior": "Create the blank draft without get_voice, channel-skill retrieval, or generated body text."
+            },
+            {
+              "description": "Save supplied text verbatim",
+              "prompt": "Save a new Hooli draft in Stanza titled Office hours with exactly this body: We are open from nine to five. Do not rewrite it.",
+              "tools_triggered": "create_draft",
+              "expected_behavior": "Save the exact supplied title and body without get_voice or a voice rewrite."
             }
           ],
           "negative": [
@@ -86,7 +110,7 @@
         }
       },
       "publication": {
-        "release_notes": "Initial release: Connect to Stanza, explore and search your workspace, read files, and create new drafts with links to the Editor."
+        "release_notes": "Add a shared writing skill for ChatGPT, Codex, Claude, and Cursor. Load current brand voice before composing, apply customer channel skills, and preserve blank drafts and verbatim saves. Requires the get_voice and Context MCP tools."
       }
     }
   }
